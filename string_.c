@@ -186,14 +186,14 @@ void test_copyIfReverse(){
 
 }
 void test() {
-    //test_findStrLen();
-    //test_find();
-    //test_findNonSpace();
-    //test_findSpace();
-    //test_findNonSpaceReverse();
-    //test_findSpaceReverse();
-    //test_copy();
-    //test_copyIf();
+    test_findStrLen();
+    test_find();
+    test_findNonSpace();
+    test_findSpace();
+    test_findNonSpaceReverse();
+    test_findSpaceReverse();
+    test_copy();
+    test_copyIf();
     test_copyIfReverse();
 }
 
@@ -201,12 +201,3 @@ void test() {
 int main() {
     test();
 }
-/*int main() {
-    char str[] = "Hello123World456";
-    char result[20];
-
-    copyIfReverse(str + 14, str, result, isLetter);
-    printf("%s", result);
-
-    return 0;
-}*/
