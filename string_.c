@@ -22,6 +22,15 @@ char* findNonSpace(char *begin) {
     }
     return begin;
 }
+/*возвращает указатель на первый пробельный символ,
+* расположенный на ленте памяти начиная с адреса begin
+или на первый ноль-символ.*/
+char *findSpace(char *begin) {
+    while (*begin != '\0' && !isspace(*begin)) {
+        begin++;
+    }
+    return begin;
+}
 
 void test_findStrLen() {
     char *str = "Hello";
@@ -46,10 +55,20 @@ void test_findNonSpace() {
     assert(*findNonSpace(str2) == '1');
 }
 
+void test_findSpace() {
+    char *str = "123456789";
+    char *str1 = "\tBOBR\tr31";
+    char *str2 = "123 123";
+    assert(*findSpace(str) == '\0');//нет пробелов
+    assert(*findSpace(str1) == '\t');//проверка с символом табуляции
+    assert(*findSpace(str2) == ' ');//"просто пробел"
+}
+
 void test() {
-    test_findStrLen();
-    test_find();
-    test_findNonSpace();
+    //test_findStrLen();
+    //test_find();
+    //test_findNonSpace();
+    test_findSpace();
 }
 
 int main() {
