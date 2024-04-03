@@ -49,6 +49,18 @@ char *findSpaceReverse(char *rbegin, const char *rend) {
     return rbegin;
 }
 
+char *copy(const char *beginSource,
+           const char *endSource,
+           char*beginDestination) {
+    size_t size = endSource - beginSource;
+
+    memcpy(beginDestination, beginSource, size);
+
+    *(beginDestination + size) = '\0';
+
+    return beginDestination + size;
+}
+
 void test_findStrLen() {
     char *str = "Hello";
     char *str1 = "Boss";
@@ -102,6 +114,17 @@ void test_findSpaceReverse() {
     assert(findSpaceReverse(&str2[4], &str2[0]) == &str2[2]);
     assert(findSpaceReverse(&str3[4], &str3[0]) == &str3[-1]);
 }
+/*записывает по адресу beginDestination
+фрагмент памяти, начиная с адреса beginSource до endSource.
+Возвращает указатель на следующий свободный фрагмент памяти в
+destination*/
+void test_copy() {
+    char *str = "12345";//пример с пособия
+    char *str_copied[5];//5, т.к /0
+    copy(&str[0], &str[5], (char *) str_copied);
+    assert(!strcmp(str, (const char *) str_copied));
+}
+
 
 void test() {
     //test_findStrLen();
@@ -109,7 +132,8 @@ void test() {
     //test_findNonSpace();
     //test_findSpace();
     //test_findNonSpaceReverse();
-    test_findSpaceReverse();
+    //test_findSpaceReverse();
+    test_copy();
 }
 
 int main() {
