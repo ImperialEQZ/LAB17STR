@@ -48,7 +48,10 @@ char *findSpaceReverse(char *rbegin, const char *rend) {
         rbegin--;
     return rbegin;
 }
-
+/*записывает по адресу beginDestination
+фрагмент памяти, начиная с адреса beginSource до endSource.
+Возвращает указатель на следующий свободный фрагмент памяти в
+destination*/
 char *copy(const char *beginSource,
            const char *endSource,
            char*beginDestination) {
@@ -59,6 +62,27 @@ char *copy(const char *beginSource,
     *(beginDestination + size) = '\0';
 
     return beginDestination + size;
+}
+/*записывает по адресу
+beginDestination элементы из фрагмента памяти начиная с beginSource
+заканчивая endSource, удовлетворяющие функции-предикату f. Функция
+возвращает указатель на следующий свободный для записи фрагмент в
+памяти*/
+char *copyIf(char *beginSource,
+             const char *endSource,
+             char*beginDestination,
+             int (*f)(int)) {
+
+    while (beginSource != endSource) {
+        if (f(*beginSource)) {
+            *beginDestination = *beginSource;
+            beginDestination++;
+        }
+        beginSource++;
+    }
+    *beginDestination = '\0';
+
+    return beginDestination;
 }
 
 void test_findStrLen() {
@@ -114,10 +138,7 @@ void test_findSpaceReverse() {
     assert(findSpaceReverse(&str2[4], &str2[0]) == &str2[2]);
     assert(findSpaceReverse(&str3[4], &str3[0]) == &str3[-1]);
 }
-/*записывает по адресу beginDestination
-фрагмент памяти, начиная с адреса beginSource до endSource.
-Возвращает указатель на следующий свободный фрагмент памяти в
-destination*/
+
 void test_copy() {
     char *str = "12345";//пример с пособия
     char *str_copied[5];//5, т.к /0
@@ -125,6 +146,18 @@ void test_copy() {
     assert(!strcmp(str, (const char *) str_copied));
 }
 
+int isLetter(int c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+
+void test_copyIf(){
+    char str[] = "Hello123World456";
+    char result[20];
+
+    copyIf(str, str + 14, result, isLetter);
+    printf("%s", result);//Вывод HelloWorld без пробела
+
+}
 
 void test() {
     //test_findStrLen();
@@ -133,8 +166,10 @@ void test() {
     //test_findSpace();
     //test_findNonSpaceReverse();
     //test_findSpaceReverse();
-    test_copy();
+    //test_copy();
+    test_copyIf();
 }
+
 
 int main() {
     test();
