@@ -40,6 +40,14 @@ char *findNonSpaceReverse(char *rbegin, const char *rend) {
         rbegin--;
     return rbegin;
 }
+/*возвращает указатель на первый пробельный символ справа,
+ * расположенный на ленте памяти, начиная с rbegin и заканчивая rend.
+ * Если символ не найден, возвращается адрес rend.*/
+char *findSpaceReverse(char *rbegin, const char *rend) {
+    while (rbegin >= rend && !isspace(*rbegin))
+        rbegin--;
+    return rbegin;
+}
 
 void test_findStrLen() {
     char *str = "Hello";
@@ -84,12 +92,24 @@ void test_findNonSpaceReverse() {
     assert(*findNonSpaceReverse(&str3[2], &str3[0]) == '\0');
 }
 
+void test_findSpaceReverse() {
+    char *str = "123456789";
+    char *str1 = "\tBOBR\tr31";
+    char *str2 = "AB CD";//пример из пособия
+    char *str3 = "ABCDE";//пример из пособия
+    assert(*findSpaceReverse(&str[8], &str[0]) == '\0');
+    assert(findSpaceReverse(&str1[8], &str1[0]) == &str1[5]);
+    assert(findSpaceReverse(&str2[4], &str2[0]) == &str2[2]);
+    assert(findSpaceReverse(&str3[4], &str3[0]) == &str3[-1]);
+}
+
 void test() {
     //test_findStrLen();
     //test_find();
     //test_findNonSpace();
     //test_findSpace();
-    test_findNonSpaceReverse();
+    //test_findNonSpaceReverse();
+    test_findSpaceReverse();
 }
 
 int main() {
