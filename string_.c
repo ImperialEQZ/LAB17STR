@@ -31,6 +31,15 @@ char *findSpace(char *begin) {
     }
     return begin;
 }
+/*возвращает указатель на первый справа символ, отличный от пробельных,
+расположенный на ленте памяти, начиная с rbegin (последний символ
+строки, за которым следует ноль-символ) и заканчивая rend (адрес символа перед началом строки).
+ Если символ не найден, возвращается адрес rend*/
+char *findNonSpaceReverse(char *rbegin, const char *rend) {
+    while (rbegin >= rend && isspace(*rbegin))
+        rbegin--;
+    return rbegin;
+}
 
 void test_findStrLen() {
     char *str = "Hello";
@@ -64,11 +73,23 @@ void test_findSpace() {
     assert(*findSpace(str2) == ' ');//"просто пробел"
 }
 
+void test_findNonSpaceReverse() {
+    char *str = " 1234567890";
+    char *str1 = "\t \t123";
+    char *str2 = "123 123\t";
+    char *str3 = "\t\t\t";
+    assert(*findNonSpaceReverse(&str[10], &str[0]) == '0');
+    assert(*findNonSpaceReverse(&str1[9], &str1[0]) == '3');
+    assert(*findNonSpaceReverse(&str2[7], &str2[0]) == '3');
+    assert(*findNonSpaceReverse(&str3[2], &str3[0]) == '\0');
+}
+
 void test() {
     //test_findStrLen();
     //test_find();
     //test_findNonSpace();
-    test_findSpace();
+    //test_findSpace();
+    test_findNonSpaceReverse();
 }
 
 int main() {
