@@ -9,5 +9,5 @@
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
-
+#include <ctype.h>
 #endif //LAB17STR_STRING__H

@@ -13,8 +13,16 @@ char* find(char *begin, char *end, int ch) {
     while (begin != end && *begin != ch)
         begin++;
     return begin;
-
 }
+/*возвращает указатель на первый
+символ, отличный от пробельных*/
+char* findNonSpace(char *begin) {
+    while (*begin != '\0' && isspace(*begin)) {
+        begin++;
+    }
+    return begin;
+}
+
 void test_findStrLen() {
     char *str = "Hello";
     char *str1 = "Boss";
@@ -30,9 +38,18 @@ void test_find() {
     assert(find(&str[0], &str[9], '0') == &str[9]);
     assert(find(&str[0], &str[9], '2') == &str[1]);
 }
+
+void test_findNonSpace() {
+    char *str = " 8642BOBR";
+    char *str2 = "14 88";
+    assert(findNonSpace(str) == &str[1]);
+    assert(*findNonSpace(str2) == '1');
+}
+
 void test() {
     test_findStrLen();
     test_find();
+    test_findNonSpace();
 }
 
 int main() {
