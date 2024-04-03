@@ -84,7 +84,25 @@ char *copyIf(char *beginSource,
 
     return beginDestination;
 }
+/*записывает по адресу
+beginDestination элементы из фрагмента памяти начиная с rbeginSource
+заканчивая rendSource, удовлетворяющие функции-предикату f. Функция возвращает значение
+ beginDestination по окончанию работы функции.*/
+char* copyIfReverse(char *rbeginSource,
+                    const char *rendSource,
+                    char *beginDestination,
+                    int (*f)(int)) {
+    while (rbeginSource != rendSource) {
+        if (f(*(rbeginSource - 1))) {
+            *beginDestination = *(rbeginSource - 1);
+            beginDestination++;
+        }
+        rbeginSource--;
+    }
+    beginDestination[*(rbeginSource - 1)] = '\0';
 
+    return beginDestination;
+}
 void test_findStrLen() {
     char *str = "Hello";
     char *str1 = "Boss";
@@ -159,6 +177,14 @@ void test_copyIf(){
 
 }
 
+void test_copyIfReverse(){
+    char *str = "Hello123World456";
+    char result[20];
+
+    copyIfReverse(str+14, str, result, isLetter);
+    printf("%s", result);//вывод dlroWolleH
+
+}
 void test() {
     //test_findStrLen();
     //test_find();
@@ -167,10 +193,20 @@ void test() {
     //test_findNonSpaceReverse();
     //test_findSpaceReverse();
     //test_copy();
-    test_copyIf();
+    //test_copyIf();
+    test_copyIfReverse();
 }
 
 
 int main() {
     test();
 }
+/*int main() {
+    char str[] = "Hello123World456";
+    char result[20];
+
+    copyIfReverse(str + 14, str, result, isLetter);
+    printf("%s", result);
+
+    return 0;
+}*/
