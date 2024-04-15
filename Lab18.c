@@ -42,14 +42,26 @@ void removeExtraSpaces(char *s) {
     s[j] = '\0';
 }
 
-void test_removeExtraSpaces1() {
+void test_removeExtraSpaces() {
     char str[] = "What    time    is it   , bro      ?";
     char exp[] = "What time is it , bro ?";
     removeExtraSpaces(str);
 
     ASSERT_STRING(exp, str);
+
+    char str1[] = "                        ";
+    char exp1[] = "";
+    removeExtraSpaces(str1);
+
+    ASSERT_STRING(exp1, str1);
+
+    char str2[] = "sentence without unnecessary spaces";
+    char exp2[] = "sentence without unnecessary spaces";
+    removeExtraSpaces(str2);
+
+    ASSERT_STRING(exp2, str2);
 }
 
 int main(){
-    test_removeExtraSpaces1();
+    test_removeExtraSpaces();
 }
