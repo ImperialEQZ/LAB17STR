@@ -222,10 +222,9 @@ void test() {
     //test_findSpaceReverse();
     //test_copy();
     //test_copyIf();
-    test_copyIfReverse();
+    //test_copyIfReverse();
 }
 
-
-int main() {
+/*int main() {
     test();
-}
+}*/

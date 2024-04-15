@@ -55,6 +55,12 @@ build CMakeFiles/Lab17str.dir/string_.c.obj: C_COMPILER__Lab17str_unscanned_Debu
   OBJECT_DIR = CMakeFiles\Lab17str.dir
   OBJECT_FILE_DIR = CMakeFiles\Lab17str.dir
 
+build CMakeFiles/Lab17str.dir/Lab18.c.obj: C_COMPILER__Lab17str_unscanned_Debug C$:/Users/Александр/CLionProjects/Lab17str/Lab18.c || cmake_object_order_depends_target_Lab17str
+  DEP_FILE = CMakeFiles\Lab17str.dir\Lab18.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Lab17str.dir
+  OBJECT_FILE_DIR = CMakeFiles\Lab17str.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Lab17str
@@ -63,7 +69,7 @@ build CMakeFiles/Lab17str.dir/string_.c.obj: C_COMPILER__Lab17str_unscanned_Debu
 #############################################
 # Link the executable Lab17str.exe
 
-build Lab17str.exe: C_EXECUTABLE_LINKER__Lab17str_Debug CMakeFiles/Lab17str.dir/string_.c.obj
+build Lab17str.exe: C_EXECUTABLE_LINKER__Lab17str_Debug CMakeFiles/Lab17str.dir/string_.c.obj CMakeFiles/Lab17str.dir/Lab18.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Lab17str.dir

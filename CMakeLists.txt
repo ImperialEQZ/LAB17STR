@@ -4,4 +4,5 @@ project(Lab17str C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(Lab17str string_.c
-        string_.h)
+        string_.h
+        Lab18.c)
