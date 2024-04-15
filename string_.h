@@ -38,4 +38,17 @@ char* copyIfReverse(char *rbeginSource,
                     const char *rendSource,
                     char *beginDestination,
                     int (*f)(int));
+
+char *getEndOfString(char *begin);
+
+void removeNonLetters(char *s);
+
+void assertString(const char *expected, char *got,
+                  char const *fileName, char const *funcName,
+                  int line);
+
+void removeExtraSpaces(char *s);
+
+void removeAdjacentEqualLetters(char *s);
+
 #endif //LAB17STR_STRING__H

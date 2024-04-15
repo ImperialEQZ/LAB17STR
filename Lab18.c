@@ -30,12 +30,26 @@ void assertString(const char *expected, char *got,
     } else
         fprintf(stderr, "%s - You're a cool bro.\n", funcName);
 }
-
+//Удаление лишних пробелов (оставляет один пробел)
 void removeExtraSpaces(char *s) {
     int i, j;
     for (i = 0, j = 0; s[i]; i++) {
         if (s[i] != ' ' || (i > 0 && s[i - 1] != ' ')) {
             s[j++] = s[i];
+        }
+    }
+
+    s[j] = '\0';
+}
+//удаление повторяющихся символов
+void removeAdjacentEqualLetters(char *s) {
+    if ((s == NULL || strlen(s) == 0))
+        return;
+    int i, j;
+    for (i = 0, j = 0; s[i] != '\0'; i++) {
+        if (s[i] != s[i + 1]) {
+            s[j] = s[i];
+            j++;
         }
     }
 
@@ -61,7 +75,34 @@ void test_removeExtraSpaces() {
 
     ASSERT_STRING(exp2, str2);
 }
+//удаляет повторяющиеся символы
+void test_removeAdjacentEqualLetters() {
+    char str[] = "88005553535";
+    char exp[] = "8053535";
+    removeAdjacentEqualLetters(str);
+
+    ASSERT_STRING(exp, str);
+
+    char str1[] = "GGGGGggggg";
+    char exp1[] = "Gg";
+    removeAdjacentEqualLetters(str1);
+
+    ASSERT_STRING(exp1, str1);
+
+    char str2[] = "";
+    char exp2[] = "";
+    removeAdjacentEqualLetters(str2);
+
+    ASSERT_STRING(exp2, str2);
+
+    char str3[] = "Walter";
+    char exp3[] = "Walter";
+    removeAdjacentEqualLetters(str3);
+
+    ASSERT_STRING(exp3, str3);
+}
 
 int main(){
-    test_removeExtraSpaces();
+    //test_removeExtraSpaces();
+    test_removeAdjacentEqualLetters();
 }
