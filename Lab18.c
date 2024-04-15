@@ -153,8 +153,63 @@ void test_digitsToStart() {
 }
 
 
+void replaceDigitsToNumOfSpaces(char *s) {
+    copy(s, getEndOfString(s), _stringBuffer);
+    char *recPtr = s;
+    char *readPtr = _stringBuffer;
+    for (int i = 0; i < strlen(_stringBuffer); ++i) {
+        if (strlen(s) >= MAX_STRING_SIZE) {
+            fprintf(stderr, "Out of MAX_STRING_SIZE");
+            exit(1);
+        }
+        if (!isdigit(_stringBuffer[i])) {
+            *recPtr = *readPtr;
+            recPtr++;
+            readPtr++;
+        } else {
+            int counter = _stringBuffer[i] - '0';
+            for (int j = counter; j > 0; --j) {
+                *recPtr = ' ';
+                recPtr++;
+            }
+            readPtr++;
+        }
+    }
+    _stringBuffer[0] = '\0';
+    *recPtr = '\0';
+}
+
+
+void test_replaceDigitsToNumOfSpaces() {
+    char str[MAX_STRING_SIZE] = "";
+    char exp[] = "";
+    replaceDigitsToNumOfSpaces(str);
+
+    ASSERT_STRING(exp, str);
+
+    char str1[MAX_STRING_SIZE] = "Bo4bR";
+    char exp1[] = "Bo    bR";//4 пробела
+    replaceDigitsToNumOfSpaces(str1);
+
+    ASSERT_STRING(exp1, str1);
+
+    char str2[MAX_STRING_SIZE] = "123";
+    char exp2[] = "      ";//1+2+3=6 пробелов
+    replaceDigitsToNumOfSpaces(str2);
+
+    ASSERT_STRING(exp2, str2);
+
+    char str3[MAX_STRING_SIZE] = "sentence without numbers";
+    char exp3[] = "sentence without numbers";
+    replaceDigitsToNumOfSpaces(str3);
+
+    ASSERT_STRING(exp3, str3);
+}
+
+
 int main(){
     //test_removeExtraSpaces();
     //test_removeAdjacentEqualLetters();
-    test_digitsToStart();
+    //test_digitsToStart();
+    test_replaceDigitsToNumOfSpaces();
 }

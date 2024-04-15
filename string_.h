@@ -1,5 +1,6 @@
 #ifndef LAB17STR_STRING__H
 #define LAB17STR_STRING__H
+#include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <memory.h>
