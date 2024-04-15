@@ -5,6 +5,8 @@
 #define ASSERT_STRING(expected, got) assertString(expected, got, \
 __FILE__, __FUNCTION__, __LINE__)
 
+char _stringBuffer[MAX_STRING_SIZE + 1];
+
 char *getEndOfString(char *begin) {
     char *end = begin;
     while (*end != '\0')
@@ -55,7 +57,7 @@ void removeAdjacentEqualLetters(char *s) {
 
     s[j] = '\0';
 }
-
+//удаляет повторяющиеся символы
 void test_removeExtraSpaces() {
     char str[] = "What    time    is it   , bro      ?";
     char exp[] = "What time is it , bro ?";
@@ -75,7 +77,7 @@ void test_removeExtraSpaces() {
 
     ASSERT_STRING(exp2, str2);
 }
-//удаляет повторяющиеся символы
+
 void test_removeAdjacentEqualLetters() {
     char str[] = "88005553535";
     char exp[] = "8053535";
@@ -102,7 +104,57 @@ void test_removeAdjacentEqualLetters() {
     ASSERT_STRING(exp3, str3);
 }
 
+int getWord(char *beginSearch, WordDescriptor *word) {
+    word->begin = findNonSpace(beginSearch);
+    if (*word->begin == '\0')
+        return 0;
+    word->end = findSpace(word->begin);
+    return 1;
+}
+
+void digitToStart(WordDescriptor word) {
+    char *endStringBuffer = copy(word.begin, word.end,
+                                 _stringBuffer);
+    char *recPosition = copyIfReverse(endStringBuffer - 1,
+                                      _stringBuffer - 1,
+                                      word.begin, isdigit);
+    copyIf(_stringBuffer, endStringBuffer, recPosition, isalpha);
+}
+
+void digitsToStart(char *s) {
+    char *beginSearch = s;
+    WordDescriptor word;
+    while (getWord(beginSearch, &word)) {
+
+        digitToStart(word);
+        beginSearch = word.end;
+    }
+}
+
+
+void test_digitsToStart() {
+    char str[] = "9AbdSH7H6j";
+    char exp[] = "679AbdSHHj";
+    digitsToStart(str);
+
+    ASSERT_STRING(exp, str);
+
+    char str1[] = "";
+    char exp1[] = "";
+    digitsToStart(str1);
+
+    ASSERT_STRING(exp1, str1);
+
+    char str2[] = "1b2im_1b2im3_b3am5_b34am";
+    char exp2[] = "435332121bimbimbambam";
+    digitsToStart(str2);
+
+    ASSERT_STRING(exp2, str2);
+}
+
+
 int main(){
     //test_removeExtraSpaces();
-    test_removeAdjacentEqualLetters();
+    //test_removeAdjacentEqualLetters();
+    test_digitsToStart();
 }
