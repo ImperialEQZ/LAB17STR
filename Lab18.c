@@ -272,10 +272,57 @@ void test_replace() {
     ASSERT_STRING(exp3, str3);
 }
 
+int areWordsEqual(WordDescriptor w1, WordDescriptor w2) {
+    char *ptr1 = w1.begin;
+    char *ptr2 = w2.begin;
+    while (ptr1 <= w1.end && ptr2 <= w2.end) {
+        if (*ptr1 != *ptr2)
+            return 0;
+
+        ptr1++;
+        ptr2++;
+    }
+
+    if (ptr1 > w1.end && ptr2 > w2.end)
+        return 1;
+    else
+        return 0;
+}
+
+void test_areWordsEqual() {
+    WordDescriptor w1 = {"bimbim", "bambam"};
+    WordDescriptor w2 = {"bimbim", "bambam"};
+
+    if(areWordsEqual(w1, w2)) {
+        printf("You're a cool bro\n");
+    } else {
+        printf("You failed bro\n");
+    }
+
+    WordDescriptor w1_1 = {"", ""};
+    WordDescriptor w2_1 = {"", ""};
+
+    if(areWordsEqual(w1_1, w2_1)) {
+        printf("You're a cool bro\n");
+    } else {
+        printf("You failed bro\n");
+    }
+
+    WordDescriptor w1_2 = {"777", "666"};
+    WordDescriptor w2_2 = {"777", "666"};
+
+    if(areWordsEqual(w1_2, w2_2)) {
+        printf("You're a cool bro\n");
+    } else {
+        printf("You failed bro\n");
+    }
+}
+
 int main(){
     //test_removeExtraSpaces();
     //test_removeAdjacentEqualLetters();
     //test_digitsToStart();
     //test_replaceDigitsToNumOfSpaces();
-    test_replace();
+    //test_replace();
+    test_areWordsEqual();
 }
