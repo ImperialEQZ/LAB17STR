@@ -336,23 +336,27 @@ bool areWordsOrdered(char *s) {
 }
 
 void test_areWordsOrdered() {
-    char s[] = "";
-    char exp[MAX_STRING_SIZE] = "";
+    char s[] = "abc";
+    assert(areWordsOrdered(s) == true);
 
-    ASSERT_STRING(exp, s);
+    char s2[] = "b a c";
+    assert(areWordsOrdered(s2) == false);
 
-    char s1[] = "bim";
-    char exp1[MAX_STRING_SIZE] = "bim";
+    char s3[] = "a";
+    assert(areWordsOrdered(s3) == true);
 
-    ASSERT_STRING(exp1, s1);
+    char s4[] = "";
+    assert(areWordsOrdered(s4) == true);
 
-    char s2[] = "123";
-    char exp2[MAX_STRING_SIZE] = "123";
+    char s5[] = "aa";
+    assert(areWordsOrdered(s5) == true);
 
-    ASSERT_STRING(exp2, s2);
+    char s6[] = "a!b?c.";
+    assert(areWordsOrdered(s6) == true);
 }
 
-int main(){
+
+int main() {
     //test_removeExtraSpaces();
     //test_removeAdjacentEqualLetters();
     //test_digitsToStart();
