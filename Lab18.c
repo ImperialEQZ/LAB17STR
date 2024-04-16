@@ -355,6 +355,30 @@ void test_areWordsOrdered() {
     assert(areWordsOrdered(s6) == true);
 }
 
+void getBagOfWords(BagOfWords *bag, char *s) {
+    WordDescriptor word;
+    bag->size = 0;
+    while (getWord(s, &word)) {
+        bag->words[bag->size] = word;
+        bag->size++;
+        s = word.end;
+    }
+}
+
+void test_getBagOfWords() {
+//Тестирование, основанное на примере из пособия
+    BagOfWords bag;
+    bag.size = 0;
+    char s[] = "a bc  d";
+
+    getBagOfWords(&bag,s);
+
+    for (int i = 0; i < bag.size; i++) {
+        printf("letter %d - %.*s\n", i+1, (int)(bag.words[i].end - bag.words[i].begin), bag.words[i].begin);
+    }
+
+    return;
+}
 
 int main() {
     //test_removeExtraSpaces();
@@ -363,5 +387,6 @@ int main() {
     //test_replaceDigitsToNumOfSpaces();
     //test_replace();
     //test_areWordsEqual();
-    test_areWordsOrdered();
+    //test_areWordsOrdered();
+    test_getBagOfWords();
 }
