@@ -271,7 +271,7 @@ void test_replace() {
 
     ASSERT_STRING(exp3, str3);
 }
-
+//Два слова одинаковые
 int areWordsEqual(WordDescriptor w1, WordDescriptor w2) {
     char *ptr1 = w1.begin;
     char *ptr2 = w2.begin;
@@ -317,6 +317,40 @@ void test_areWordsEqual() {
         printf("You failed bro\n");
     }
 }
+//Определяет, упорядочены ли лексикографически слова данного предложения №6 (b)
+bool areWordsOrdered(char *s) {
+    WordDescriptor word1;
+    WordDescriptor word2;
+    if (getWord(s, &word1)) {
+        word2 = word1;
+        while (getWord(s, &word1)) {
+            if (areWordsEqual(word1, word2) == 0)
+                return false;
+            word2 = word1;
+            s = word1.end;
+        }
+        return true;
+
+    } else
+        return true;
+}
+
+void test_areWordsOrdered() {
+    char s[] = "";
+    char exp[MAX_STRING_SIZE] = "";
+
+    ASSERT_STRING(exp, s);
+
+    char s1[] = "bim";
+    char exp1[MAX_STRING_SIZE] = "bim";
+
+    ASSERT_STRING(exp1, s1);
+
+    char s2[] = "123";
+    char exp2[MAX_STRING_SIZE] = "123";
+
+    ASSERT_STRING(exp2, s2);
+}
 
 int main(){
     //test_removeExtraSpaces();
@@ -324,5 +358,6 @@ int main(){
     //test_digitsToStart();
     //test_replaceDigitsToNumOfSpaces();
     //test_replace();
-    test_areWordsEqual();
+    //test_areWordsEqual();
+    test_areWordsOrdered();
 }
