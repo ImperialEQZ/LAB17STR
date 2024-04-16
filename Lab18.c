@@ -207,9 +207,75 @@ void test_replaceDigitsToNumOfSpaces() {
 }
 
 
+void replace(char *source, char *w1, char *w2) {
+    size_t size_w1 = strlen(w1);
+    size_t size_w2 = strlen(w2);
+    WordDescriptor word1 = {w1, w1 + size_w1};
+    WordDescriptor word2 = {w2, w2 + size_w2};
+    char *readPtr, *recPtr;
+    if (size_w1 >= size_w2) {
+        readPtr = source;
+        recPtr = source;
+    } else {
+        copy(source, getEndOfString(source), _stringBuffer);
+        readPtr = _stringBuffer;
+        recPtr = source;
+    }
+    while (*readPtr != '\0') {
+        if (memcmp(readPtr, w1, size_w1) == 0) {
+            for (int i = 0; i < size_w2; i++) {
+                *recPtr = w2[i];
+                recPtr++;
+            }
+
+            readPtr += size_w1;
+        } else {
+            *recPtr = *readPtr;
+            readPtr++;
+            recPtr++;
+        }
+    }
+    *recPtr = '\0';
+}
+
+void test_replace() {
+    char str[MAX_STRING_SIZE] = " ";
+    char w1[] = " ";
+    char w2[] = "background-image";
+    replace(str, w1, w2);
+    char exp[MAX_STRING_SIZE] = "background-image";
+
+    ASSERT_STRING(exp, str);
+
+    char str1[MAX_STRING_SIZE] = "I love water";
+    char w1_1[] = "water";
+    char w2_1[] = "beer";
+    replace(str1, w1_1, w2_1);
+    char exp1[MAX_STRING_SIZE] = "I love beer";
+
+    ASSERT_STRING(exp1, str1);
+
+    char str2[MAX_STRING_SIZE] = "";
+    char w1_2[] = "";
+    char w2_2[] = "";
+    replace(str2, w1_2, w2_2);
+    char exp2[MAX_STRING_SIZE] = "";
+
+    ASSERT_STRING(exp2, str2);
+
+    char str3[MAX_STRING_SIZE] = "SeNteNcE CAPs";
+    char w1_3[] = "SeNteNcE CAPs";
+    char w2_3[] = "Sentence caps";
+    replace(str3, w1_3, w2_3);
+    char exp3[MAX_STRING_SIZE] = "Sentence caps";
+
+    ASSERT_STRING(exp3, str3);
+}
+
 int main(){
     //test_removeExtraSpaces();
     //test_removeAdjacentEqualLetters();
     //test_digitsToStart();
-    test_replaceDigitsToNumOfSpaces();
+    //test_replaceDigitsToNumOfSpaces();
+    test_replace();
 }
