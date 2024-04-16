@@ -379,6 +379,113 @@ void test_getBagOfWords() {
 
     return;
 }
+//вспомогательная функция, не такая как char* copyIfReverse:
+char *Copy_Reverse(char *rbegin_source, const char *rend_source, char
+*beginDestination) {
+    while (rbegin_source != rend_source)
+        (*beginDestination++) = *rbegin_source--;
+
+    return beginDestination;
+}
+
+
+void reverseWordsBag(char *s) {
+    *copy(s, getEndOfString(s), _stringBuffer) = '\0';
+    getBagOfWords(&_bag, _stringBuffer);
+    char *copy_str = s;
+    for (int i = 0; i < _bag.size; i++) {
+        copy_str = Copy_Reverse(_bag.words[i].end - 1, _bag.words[i].begin -
+                                                   1, copy_str);
+        *copy_str++ = ' ';
+    }
+    if (copy_str != s)
+        copy_str--;
+
+    *copy_str = '\0';
+}
+
+void test_reverseWordsBag() {
+    char s[MAX_STRING_SIZE] = "";
+    reverseWordsBag(s);
+
+    ASSERT_STRING("", s);
+
+    char s1[MAX_STRING_SIZE] = "Sasha";
+    reverseWordsBag(s1);
+
+    ASSERT_STRING("ahsaS", s1);
+
+    char s2[MAX_STRING_SIZE] = "ABCD";
+    reverseWordsBag(s2);
+
+    ASSERT_STRING("DCBA", s2);
+
+    char s3[MAX_STRING_SIZE] = "123";
+    reverseWordsBag(s3);
+
+    ASSERT_STRING("321", s3);
+}
+//Вспомогательная функция на проверку слова-палиндрома
+int isWordPalindrome(char *begin, char *end) {
+    while (begin < end) {
+//Пропуск пробелов и знаков пунктуации
+        if (!isalpha(*begin)) {
+            begin++;
+        } else if (!isalpha(*end)) {
+            end--;
+        } else {
+//Сравниваю символы
+            if (tolower(*begin) != tolower(*end)) {
+                return 0; // Не палиндром
+            }
+            begin++;
+            end--;
+        }
+    }
+    return 1; // Палиндром
+}
+
+size_t howManyWordsPalindromes(char *s) {
+    char *end_str = getEndOfString(s);
+    char *beginSearch = findNonSpace(s);
+    int countPalindromes = 0;
+    char *position_first_comma = find(beginSearch, end_str, ',');
+    int last_comma = *position_first_comma == '\0' && end_str - beginSearch != 0;
+
+    while (*position_first_comma != '\0' || last_comma) {
+        beginSearch = findNonSpace(beginSearch);
+        countPalindromes += isWordPalindrome(beginSearch, position_first_comma);
+        beginSearch = position_first_comma + 1;
+        if (last_comma)
+            break;
+
+        position_first_comma = find(beginSearch, end_str, ',');
+        last_comma = *position_first_comma == '\0';
+    }
+
+    return countPalindromes;
+}
+
+void test_howManyWordsPalindromes() {
+    char s[] = "";
+    assert(howManyWordsPalindromes(s) == 0);
+
+    char s1[] = "ANNA";
+    assert(howManyWordsPalindromes(s1) == 1);
+
+    char s2[] = "ANNA, level";
+    assert(howManyWordsPalindromes(s2) == 2);
+
+    char s3[] = "p";
+    assert(howManyWordsPalindromes(s3) == 1);
+
+    char s4[] = "ANNA, Sasha";
+    assert(howManyWordsPalindromes(s4) == 1);
+
+    char s5[] = "biMBIMbamBAAAAM";
+    assert(howManyWordsPalindromes(s5) == 0);
+}
+
 
 int main() {
     //test_removeExtraSpaces();
@@ -388,5 +495,7 @@ int main() {
     //test_replace();
     //test_areWordsEqual();
     //test_areWordsOrdered();
-    test_getBagOfWords();
+    //test_getBagOfWords();
+    //test_reverseWordsBag();
+    test_howManyWordsPalindromes();
 }
