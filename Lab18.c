@@ -486,6 +486,50 @@ void test_howManyWordsPalindromes() {
     assert(howManyWordsPalindromes(s5) == 0);
 }
 
+void task_9(char *str1, char *str2, char *res) {
+    char *word1 = strtok(str1, " ");
+    char *word2 = strtok(str2, " ");
+
+    while (word1 != NULL || word2 != NULL) {
+        if (word1 != NULL) {
+            strcat(res, word1);
+            strcat(res, " ");
+            word1 = strtok(NULL, " ");
+        }
+        if (word2 != NULL) {
+            strcat(res, word2);
+            strcat(res, " ");
+            word2 = strtok(NULL, " ");
+        }
+    }
+}
+
+void test_task_9() {
+    char s1[] = "1 3 5 7";
+    char s2[] = "2 4 6 8";
+    char result[200] = "";
+
+    task_9(s1, s2, result);
+
+    ASSERT_STRING("1 2 4 6 8 ", result);
+
+    char s1_1[] = "Hi, how are you";
+    char s2_1[] = "smart peter ";
+    char result1[200] = "";
+
+    task_9(s1_1, s2_1, result1);
+
+    ASSERT_STRING("Hi, smart peter ", result1);
+
+    char s1_2[] = "";
+    char s2_2[] = "";
+    char result2[200] = "";
+
+    task_9(s1_2, s2_2, result2);
+
+    ASSERT_STRING("", result2);
+}
+
 
 int main() {
     //test_removeExtraSpaces();
@@ -497,5 +541,6 @@ int main() {
     //test_areWordsOrdered();
     //test_getBagOfWords();
     //test_reverseWordsBag();
-    test_howManyWordsPalindromes();
+    //test_howManyWordsPalindromes();
+    test_task_9();
 }
