@@ -26,6 +26,14 @@ typedef struct BagOfWords {
 BagOfWords _bag;
 BagOfWords _bag2;
 
+
+typedef enum WordBeforeFirstWordWithAReturnCode {
+    FIRST_WORD_WITH_A,
+    NOT_FOUND_A_WORD_WITH_A,
+    WORD_FOUND,
+    EMPTY_STRING
+} WordBeforeFirstWordWithAReturnCode;
+
 size_t findStrLen(const char *start);
 
 char* find(char *begin, char *end, int ch);

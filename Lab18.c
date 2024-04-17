@@ -530,6 +530,79 @@ void test_task_9() {
     ASSERT_STRING("", result2);
 }
 
+void task_11(char *s) {
+    char *word = NULL;
+    char *key = strtok(s, " ");
+
+    while (key != NULL) {
+        int foundA = 0;
+        for (int i = 0; key[i] != '\0'; i++) {
+            if (tolower(key[i]) == 'a') {
+                foundA = 1;
+                break;
+            }
+        }
+
+        if (foundA) {
+            if (word != NULL) {
+                printf("%s\n", word);
+                return;
+            }
+        } else {
+            word = key;
+        }
+
+        key = strtok(NULL, " ");
+    }
+}
+//как бы продолжение 11 номера
+WordBeforeFirstWordWithAReturnCode getWordBeforeFirstWordWithA(char *s, WordDescriptor *w) {
+    if (s == NULL || strlen(s) == 0)
+        return EMPTY_STRING;
+
+    char *wordBegin = NULL;
+    char *wordEnd = NULL;
+    char *key = strtok(s, " ");
+
+    while (key != NULL) {
+        int found_a = 0;
+        for (int i = 0; key[i] != '\0'; i++)
+            if (tolower(key[i]) == 'a') {
+                found_a = 1;
+                break;
+            }
+
+        if (found_a) {
+            if (wordBegin != NULL) {
+                w->begin = wordBegin;
+                w->end = wordEnd;
+                return WORD_FOUND;
+            } else
+                return FIRST_WORD_WITH_A;
+
+        } else {
+            wordBegin =key;
+            wordEnd = key + strlen(key);
+        }
+
+        key = strtok(NULL, " ");
+    }
+
+    return NOT_FOUND_A_WORD_WITH_A;
+}
+//тест с пособия
+void testAll_getWordBeforeFirstWordWithA() {
+    WordDescriptor word;
+    char s1[] = "";
+    assert(getWordBeforeFirstWordWithA(s1, &word) == EMPTY_STRING);
+    char s2[] = "ABC";
+    assert(getWordBeforeFirstWordWithA(s2, &word) == FIRST_WORD_WITH_A);
+    char s3[] = "BC A";
+    assert(getWordBeforeFirstWordWithA(s3, &word) == WORD_FOUND);
+
+    char s4[] = "B Q WE YR OW IUWR";
+    assert(getWordBeforeFirstWordWithA(s4, &word) == NOT_FOUND_A_WORD_WITH_A);
+}
 
 int main() {
     //test_removeExtraSpaces();
@@ -542,5 +615,6 @@ int main() {
     //test_getBagOfWords();
     //test_reverseWordsBag();
     //test_howManyWordsPalindromes();
-    test_task_9();
+    //test_task_9();
+    testAll_getWordBeforeFirstWordWithA();
 }
