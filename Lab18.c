@@ -862,6 +862,46 @@ void test_task_16() {
     ASSERT_STRING("", Rres);
 }
 
+int isPalindrome(char *s) {
+    size_t length = strlen(s);
+    for (int i = 0; i < length / 2; i++)
+        if (tolower(s[i]) != tolower(s[length - i - 1]))
+            return 0;
+
+    return 1;
+}
+
+
+void removePalindromes(char *str) {
+    char *token = strtok(str, " ");
+    char result[1000] = "";
+
+    while (token != NULL) {
+        if (!isPalindrome(token)) {
+            strcat(result, token);
+            strcat(result, " ");
+        }
+
+        token = strtok(NULL, " ");
+    }
+
+    strcpy(str, result);
+}
+
+void test_remove_palindromes() {
+    char str[] = "mamam hi mamam";
+    removePalindromes(str);
+    ASSERT_STRING("hi ", str);
+
+    char str1[] = "";
+    removePalindromes(str1);
+    ASSERT_STRING("", str1);
+
+    char str2[] = "1221 bambim 1221";
+    removePalindromes(str2);
+    ASSERT_STRING("bambim ", str2);
+}
+
 int main() {
     //test_removeExtraSpaces();
     //test_removeAdjacentEqualLetters();
@@ -879,5 +919,6 @@ int main() {
     //test_hasDuplicateWords();
     //test_task_14();
     //test_task_15();
-    test_task_16();
+    //test_task_16();
+    test_remove_palindromes();
 }
