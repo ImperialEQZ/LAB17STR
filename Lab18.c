@@ -1,7 +1,6 @@
 #include "string_.h"
 #include "string_.c"
 
-
 #define ASSERT_STRING(expected, got) assertString(expected, got, \
 __FILE__, __FUNCTION__, __LINE__)
 
@@ -719,6 +718,75 @@ void test_hasDuplicateWords() {
     char str4[] = "123 321 123";
     assert(DuplicateWords(str4) == true);
 }
+//Дробление строки
+void Str_parse(char *str, BagOfWords *bag) {
+    char *key= strtok(str, " ");
+    while (key != NULL) {
+        bag->words[bag->size].begin = key;
+        bag->words[bag->size].end = key + strlen(key);
+        bag->size++;
+        key = strtok(NULL, " ");
+    }
+}
+//сравнение слов (английских)
+int compareWords(char *word1, char *word2) {
+    int count1[English_Alphabet] = {0};
+    int count2[English_Alphabet] = {0};
+
+    size_t len_word_1 = strlen(word1);
+    size_t len_word_2 = strlen(word2);
+
+    if (len_word_1 != len_word_2) {
+        return 0;
+    }
+
+    for (int i = 0; i < len_word_1; i++) {
+        count1[tolower(word1[i]) - 'a']++;
+        count2[tolower(word2[i]) - 'a']++;
+    }
+
+    for (int i = 0; i < English_Alphabet; i++) {
+        if (count1[i] != count2[i]) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+int task_14(BagOfWords *bag) {
+    for (int i = 0; i < bag->size - 1; i++) {
+        for (int j = i + 1; j < bag->size; j++) {
+            if (compareWords(bag->words[i].begin, bag->words[j].begin)) {
+                char result1[MAX_WORD_SIZE], result2[MAX_WORD_SIZE];
+                wordDescriptorToString(bag->words[i], result1);
+                wordDescriptorToString(bag->words[j], result2);
+                return 1;
+            }
+        }
+    }
+
+    return 0;
+}
+
+void test_task_14() {
+    BagOfWords bag1;
+    bag1.size = 0;
+    Str_parse("", &bag1);
+    assert(task_14(&bag1) == 0);
+
+    BagOfWords bag2;
+    bag2.size = 0;
+    Str_parse("123 321 123 123", &bag2);
+    assert(task_14(&bag2) == 4);
+
+    BagOfWords bag3;
+    bag3.size = 0;
+    Str_parse("hello world olleh dlrow", &bag3);
+    assert(task_14(&bag3) == 1);
+
+}
+
 
 int main() {
     //test_removeExtraSpaces();
@@ -734,5 +802,6 @@ int main() {
     //test_task_9();
     //testAll_getWordBeforeFirstWordWithA();
     //test_task_12();
-    test_hasDuplicateWords();
+    //test_hasDuplicateWords();
+    test_task_14();
 }
