@@ -13,6 +13,10 @@ char *getEndOfString(char *begin) {
 
     return end;
 }
+//получить размер слова
+int getSizeWord(WordDescriptor word) {
+    return word.end - word.begin;
+}
 
 void removeNonLetters(char *s) {
     char *endSource = getEndOfString(s);
@@ -812,6 +816,51 @@ void test_task_15() {
     ASSERT_STRING(exp2, "123 321");
 }
 
+int ThisWordInBag(BagOfWords bag, WordDescriptor word) {
+    for (int i = 0; i < bag.size; i++) {
+        if (strncmp(word.begin, bag.words[i].begin, getSizeWord(word)) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+WordDescriptor task_16(char *s1, char *s2) {
+    getBagOfWords(&_bag, s1);
+    getBagOfWords(&_bag2, s2);
+
+    for (int i = 0; i < _bag.size; i++) {
+        if (ThisWordInBag(_bag2, _bag.words[i])) {
+            if (i != 0) {
+                return  _bag.words[i - 1];
+            } else {
+                break;
+            }
+        }
+    }
+
+    WordDescriptor NULL_word = {NULL, NULL};
+
+    return NULL_word;
+}
+
+void test_task_16() {
+    char s1[] = "aa boba NNN";
+    char s2[] = "xx boba NNN";
+
+    WordDescriptor res_word = task_16(s1, s2);
+    char *yres[MAX_STRING_SIZE];
+    wordDescriptorToString(res_word, yres);
+    ASSERT_STRING("aa", yres);
+
+    char s1_1[] = "";
+    char s2_1[] = "";
+
+    WordDescriptor res = task_16(s1_1, s2_1);
+    char *Rres[MAX_STRING_SIZE];
+    wordDescriptorToString(res, Rres);
+    ASSERT_STRING("", Rres);
+}
 
 int main() {
     //test_removeExtraSpaces();
@@ -829,5 +878,6 @@ int main() {
     //test_task_12();
     //test_hasDuplicateWords();
     //test_task_14();
-    test_task_15();
+    //test_task_15();
+    test_task_16();
 }
