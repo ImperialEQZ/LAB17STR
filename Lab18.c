@@ -403,6 +403,47 @@ void reverseWordsBag(char *s) {
 
     *copy_str = '\0';
 }
+//для 12 задания
+int isWordInBagOfWords(WordDescriptor word, BagOfWords bag) {
+    for (size_t i = 0; i < bag.size; ++i) {
+        if (strncmp(word.begin, bag.words[i].begin, word.end - word.begin) == 0)
+            return 1;
+    }
+
+    return 0;
+}
+//для 12 задания
+BagOfWords createBagOfWordsFromString(char *s) {
+    BagOfWords bag;
+    bag.size = 0;
+
+    char *wordBegin = s;
+    for (; *s; s++) {
+        if (isspace(*s)) {
+            if (s > wordBegin) {
+                bag.words[bag.size].begin = wordBegin;
+                bag.words[bag.size].end = s;
+                bag.size++;
+            }
+
+            wordBegin = s + 1;
+        }
+    }
+
+    if (s > wordBegin) {
+        bag.words[bag.size].begin = wordBegin;
+        bag.words[bag.size].end = s;
+        bag.size++;
+    }
+
+    return bag;
+}
+//для 12 задания
+void wordDescriptorToString(WordDescriptor word, char *destination) {
+    int length = word.end - word.begin;
+    strncpy(destination, word.begin, length);
+    destination[length] = '\0';
+}
 
 void test_reverseWordsBag() {
     char s[MAX_STRING_SIZE] = "";
@@ -604,6 +645,48 @@ void testAll_getWordBeforeFirstWordWithA() {
     assert(getWordBeforeFirstWordWithA(s4, &word) == NOT_FOUND_A_WORD_WITH_A);
 }
 
+WordDescriptor task_12(char *s1, char *s2) {
+    BagOfWords bag = createBagOfWordsFromString(s2);
+    WordDescriptor lastWord = {NULL, NULL};
+
+    BagOfWords wordsInS1 = createBagOfWordsFromString(s1);
+    for (size_t i = 0; i < wordsInS1.size; ++i) {
+        if (isWordInBagOfWords(wordsInS1.words[i], bag))
+            lastWord = wordsInS1.words[i];
+    }
+
+    return lastWord;
+}
+
+void test_task_12() {
+    char s1[] = "";
+    char s2[] = "";
+    WordDescriptor word1 = task_12(s1, s2);
+    char str1[MAX_WORD_SIZE];
+
+    wordDescriptorToString(word1, str1);
+
+    ASSERT_STRING("", str1);
+
+    char s1_1[] = "bimbim bam bam";
+    char s2_1[] = "bum bam";
+    WordDescriptor word2 = task_12(s1_1, s2_1);
+    char str2[MAX_WORD_SIZE];
+
+    wordDescriptorToString(word2, str2);
+
+    ASSERT_STRING("bam", str2);
+
+    char s1_2[] = "123 456 789";
+    char s2_2[] = "098 456 586";
+    WordDescriptor word3 = task_12(s1_2, s2_2);
+    char str3[MAX_WORD_SIZE];
+
+    wordDescriptorToString(word3, str3);
+
+    ASSERT_STRING("456", str3);
+}
+
 int main() {
     //test_removeExtraSpaces();
     //test_removeAdjacentEqualLetters();
@@ -616,5 +699,6 @@ int main() {
     //test_reverseWordsBag();
     //test_howManyWordsPalindromes();
     //test_task_9();
-    testAll_getWordBeforeFirstWordWithA();
+    //testAll_getWordBeforeFirstWordWithA();
+    test_task_12();
 }
