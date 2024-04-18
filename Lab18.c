@@ -687,6 +687,39 @@ void test_task_12() {
     ASSERT_STRING("456", str3);
 }
 
+int DuplicateWords(char *s) {
+    char *words[100];
+    int wordCount = 0;
+
+    char *word = strtok(s, " ");
+    while (word != NULL) {
+        words[wordCount] = word;
+        wordCount++;
+        word = strtok(NULL, " ");
+    }
+
+    for (int i = 0; i < wordCount; i++)
+        for (int j = i + 1; j < wordCount; j++)
+            if (strcmp(words[i], words[j]) == 0)
+                return 1;
+
+    return 0;
+}
+
+void test_hasDuplicateWords() {
+    char str1[] = "";
+    assert(DuplicateWords(str1) == false);
+
+    char str2[] = "Hi friend";
+    assert(DuplicateWords(str2) == false);
+
+    char str3[] = "bim bim";
+    assert(DuplicateWords(str3) == true);
+
+    char str4[] = "123 321 123";
+    assert(DuplicateWords(str4) == true);
+}
+
 int main() {
     //test_removeExtraSpaces();
     //test_removeAdjacentEqualLetters();
@@ -700,5 +733,6 @@ int main() {
     //test_howManyWordsPalindromes();
     //test_task_9();
     //testAll_getWordBeforeFirstWordWithA();
-    test_task_12();
+    //test_task_12();
+    test_hasDuplicateWords();
 }
