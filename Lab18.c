@@ -787,6 +787,31 @@ void test_task_14() {
 
 }
 
+char *task_15(char *str) {
+    char *last_space = strrchr(str, ' ');
+    if (last_space != NULL)
+        *last_space = '\0';
+
+    return str;
+}
+
+void test_task_15() {
+    char str[] = "Hello world btw";
+    char *exp = task_15(str);
+
+    ASSERT_STRING(exp, "Hello world");
+
+    char str1[] = "";
+    char *exp1 = task_15(str1);
+
+    ASSERT_STRING(exp1, "");
+
+    char str2[] = "123 321 5";
+    char *exp2 = task_15(str2);
+
+    ASSERT_STRING(exp2, "123 321");
+}
+
 
 int main() {
     //test_removeExtraSpaces();
@@ -803,5 +828,6 @@ int main() {
     //testAll_getWordBeforeFirstWordWithA();
     //test_task_12();
     //test_hasDuplicateWords();
-    test_task_14();
+    //test_task_14();
+    test_task_15();
 }
