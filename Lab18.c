@@ -574,7 +574,7 @@ void test_task_9() {
     ASSERT_STRING("", result2);
 }
 
-void task_11(char *s) {
+/*void task_11(char *s) {
     char *word = NULL;
     char *key = strtok(s, " ");
 
@@ -598,7 +598,7 @@ void task_11(char *s) {
 
         key = strtok(NULL, " ");
     }
-}
+}*/
 //как бы продолжение 11 номера
 WordBeforeFirstWordWithAReturnCode getWordBeforeFirstWordWithA(char *s, WordDescriptor *w) {
     if (s == NULL || strlen(s) == 0)
@@ -902,23 +902,128 @@ void test_remove_palindromes() {
     ASSERT_STRING("bambim ", str2);
 }
 
-int main() {
-    //test_removeExtraSpaces();
-    //test_removeAdjacentEqualLetters();
-    //test_digitsToStart();
-    //test_replaceDigitsToNumOfSpaces();
-    //test_replace();
-    //test_areWordsEqual();
-    //test_areWordsOrdered();
-    //test_getBagOfWords();
-    //test_reverseWordsBag();
-    //test_howManyWordsPalindromes();
-    //test_task_9();
-    //testAll_getWordBeforeFirstWordWithA();
-    //test_task_12();
-    //test_hasDuplicateWords();
-    //test_task_14();
-    //test_task_15();
-    //test_task_16();
-    test_remove_palindromes();
+void task_18(char *s1, char *s2) {
+    char *write_ptr;
+
+    getBagOfWords(&_bag, s1);
+    getBagOfWords(&_bag2, s2);
+
+    int large_string_1;
+
+    if(_bag.size > _bag2.size){
+        large_string_1 = 1;
+    } else {
+        large_string_1 = 0;
+    }
+
+    int diff_size;
+    if (large_string_1) {
+        diff_size = _bag.size - _bag2.size;
+    } else {
+        diff_size = _bag2.size - _bag.size;
+    }
+
+    if (large_string_1) {
+        write_ptr = _bag2.words[_bag2.size - 1].end;
+
+        for (int i = 0; i < diff_size; i++) {
+            *(write_ptr++) = ' ';
+            write_ptr = copy(_bag.words[_bag2.size + i].begin, _bag.words[_bag2.size + i].end, write_ptr);
+        }
+
+    } else {
+        write_ptr = _bag.words[_bag.size - 1].end;
+        for (int i = 0; i < diff_size; i++) {
+            *(write_ptr++) = ' ';
+            write_ptr = copy(_bag2.words[_bag.size + i].begin, _bag2.words[_bag.size + i].end, write_ptr);
+        }
+    }
+
+    *write_ptr = '\0';
 }
+
+void test_task18() {
+    char s1[MAX_STRING_SIZE] = "the sock";
+    char s2[MAX_STRING_SIZE] = "Hello Patriсk";
+    task_18(s1, s2);
+
+    ASSERT_STRING("Hello Patriсk", s2);
+
+    char s1_1[MAX_STRING_SIZE] = "bim bim";
+    char s2_1[MAX_STRING_SIZE] = "bam bam";
+    task_18(s1_1, s2_1);
+
+    ASSERT_STRING("bam bam", s2_1);
+
+}
+
+int task19(const char *word, const char *str) {
+    int letters[English_Alphabet] = {0};
+
+    for (; *str; ++str) {
+        if (*str >= 'a' && *str <= 'z') {
+            letters[*str - 'a'] = 1;
+        } else if (*str >= 'A' && *str <= 'Z') {
+            letters[*str - 'A'] = 1;
+        }
+    }
+
+    for (; *word; ++word) {
+        if (*word >= 'a' && *word <= 'z') {
+            if (!letters[*word - 'a']) {
+                return 0;
+            }
+        } else if (*word >= 'A' && *word <= 'Z') {
+            if (!letters[*word - 'A']) {
+                return 0;
+            }
+        }
+    }
+
+    return 1;
+}
+
+void test_task19() {
+    char word[] = "";
+    char str[] = "";
+
+    assert(task19(word, str) == 1);
+
+    char word1[] = "JoJo";
+    char str1[] = "JoJo for art Lovers";
+
+    assert(task19(word1, str1) == 1);
+
+    char word1_2[] = "Hey";
+    char str1_2[] = "bimbimbambamovich";
+
+    assert(task19(word1_2, str1_2) == 0);
+}
+
+void tests() {
+    test_removeExtraSpaces();
+    test_removeAdjacentEqualLetters();
+    test_digitsToStart();
+    test_replaceDigitsToNumOfSpaces();
+    test_replace();
+    test_areWordsEqual();
+    test_areWordsOrdered();
+    test_getBagOfWords();
+    test_reverseWordsBag();
+    test_howManyWordsPalindromes();
+    test_task_9();
+    testAll_getWordBeforeFirstWordWithA();
+    test_task_12();
+    test_hasDuplicateWords();
+    test_task_14();
+    test_task_15();
+    test_task_16();
+    test_remove_palindromes();
+    test_task18();
+    test_task19();
+}
+
+int main() {
+    tests();
+}
+
